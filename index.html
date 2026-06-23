@@ -4,111 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LAST KNOWN POSITION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           MERIDIAN DESIGN SYSTEM — self-hosted fonts
-           Display/statements → Helvetica Now Text (light, compressed)
-           Labels / body / data → Geom Graphic W03 (mono, wide-tracked)
-           ============================================================ */
-        @font-face {
-            font-family: 'Helvetica Now Text';
-            src: url('fonts/HelveticaNowText-Regular.woff2') format('woff2'),
-                 url('fonts/HelveticaNowText-Regular.woff') format('woff');
-            font-weight: 400; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'Helvetica Now Text';
-            src: url('fonts/HelveticaNowText-Medium.woff2') format('woff2'),
-                 url('fonts/HelveticaNowText-Medium.woff') format('woff');
-            font-weight: 500; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'Helvetica Now Text';
-            src: url('fonts/HelveticaNowText-Bold.woff2') format('woff2'),
-                 url('fonts/HelveticaNowText-Bold.woff') format('woff');
-            font-weight: 700; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'Helvetica Now Text';
-            src: url('fonts/HelveticaNowText-Black.woff2') format('woff2'),
-                 url('fonts/HelveticaNowText-Black.woff') format('woff');
-            font-weight: 900; font-style: normal; font-display: swap;
-        }
-        @font-face {
-            font-family: 'Geom Graphic W03';
-            src: url('fonts/GeomGraphicW03-Regular.ttf') format('truetype');
-            font-weight: 400 700; font-style: normal; font-display: swap;
-        }
-
-        /* ---- Meridian tokens (color · type · geometry · motion) ---- */
-        :root {
-            /* Ink / ground — cool near-black, teal-navy cast */
-            --ink-900:#04080A; --ink-850:#060D10; --ink-800v:#0A161A;
-            --ink-700:#0E1E23; --ink-600:#14282E; --ink-500:#1D363D;
-            /* Neutral text ramp */
-            --neutral-000:#F2F6F6; --neutral-100:#D2DCDC; --neutral-300:#9DB0B2;
-            --neutral-400:#7B9094; --neutral-500:#56696D; --neutral-600:#38484B;
-            /* Amber — PRIMARY signal: selected / target / CTAs */
-            --amber-300:#F6CE6A; --amber-400:#F2B233; --amber-500:#E59E16; --amber-600:#B97B0C;
-            --amber-tint:rgba(242,178,51,0.12); --amber-glow:rgba(242,178,51,0.45);
-            /* Aqua — SECONDARY signal: friendly / comms / UI lines */
-            --aqua-300:#6BE7C2; --aqua-400:#36E0B0; --aqua-500:#1FBE93; --aqua-600:#128268;
-            --aqua-tint:rgba(54,224,176,0.10); --aqua-glow:rgba(54,224,176,0.42);
-            /* Red — THREAT / alert / destructive */
-            --red-300:#F87863; --red-400:#F23A24; --red-500:#CE2410; --red-600:#7A150A;
-            --red-tint:rgba(242,58,36,0.14); --red-glow:rgba(242,58,36,0.50);
-            /* Semantic */
-            --surface-void:var(--ink-900); --surface-app:var(--ink-850);
-            --surface-panel:var(--ink-800v); --surface-raised:var(--ink-700);
-            --text-strong:var(--neutral-000); --text-body:var(--neutral-100);
-            --text-muted:var(--neutral-300); --text-faint:var(--neutral-400);
-            --border-faint:var(--ink-600); --border-default:var(--ink-500);
-            --border-strong:var(--neutral-500); --grid-line:var(--neutral-600);
-            --signal-primary:var(--amber-400); --signal-secondary:var(--aqua-400);
-            --signal-threat:var(--red-400);
-            /* Type */
-            --font-display:'Helvetica Now Text', system-ui, -apple-system, sans-serif;
-            --font-mono:'Geom Graphic W03', ui-monospace, 'SF Mono', Menlo, monospace;
-            --tracking-display:-0.055em; --tracking-tight:-0.04em;
-            --tracking-label:0.14em; --tracking-mega:0.22em;
-            /* Geometry */
-            --chamfer-sm:6px; --chamfer-md:12px; --chamfer-lg:20px;
-            --border-hair:1px; --border-thin:1.5px; --border-thick:2px;
-            /* Motion */
-            --ease-mech:cubic-bezier(0.2,0,0,1); --ease-out:cubic-bezier(0.16,1,0.3,1);
-            --dur-fast:90ms; --dur-base:160ms; --dur-slow:280ms;
-            /* Glow */
-            --glow-amber:0 0 0 1px var(--amber-400), 0 0 16px var(--amber-glow);
-            --glow-aqua:0 0 0 1px var(--aqua-400), 0 0 16px var(--aqua-glow);
-            --glow-red:0 0 0 1px var(--red-400), 0 0 18px var(--red-glow);
-        }
-
-        /* Signature chamfer: cut top-right + bottom-left (the dominant motif) */
-        .cf-tr-bl {
-            --cf: var(--chamfer-md);
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf),
-                100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
-        }
-        /* Registration corner ticks — wrap a positioned element in .reticle */
-        .reticle::before, .reticle::after {
-            content:""; position:absolute; width:8px; height:8px;
-            border:var(--border-thin) solid currentColor; pointer-events:none;
-        }
-        .reticle::before { top:-2px; left:-2px; border-right:0; border-bottom:0; }
-        .reticle::after { bottom:-2px; right:-2px; border-left:0; border-top:0; }
-        @keyframes mrd-pulse { 0%,100%{opacity:1;} 50%{opacity:0.25;} }
-
         body {
             margin: 0;
             overflow: hidden;
-            background-color: var(--ink-900);
-            font-family: var(--font-mono);
-            letter-spacing: 0.04em;
-            color: var(--text-muted);
+            background-color: #000;
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            letter-spacing: 0.8px;
+            color: #b0c4de;
             user-select: none;
-            -webkit-font-smoothing: antialiased;
         }
-        ::selection { background: var(--amber-400); color: var(--ink-900); }
 
         #canvas-container {
             position: absolute;
@@ -126,7 +34,8 @@
             position: absolute;
             inset: 0;
             z-index: 100;
-            background: radial-gradient(ellipse at center, #06121a 0%, var(--ink-900) 72%);
+            background: radial-gradient(ellipse at center, rgba(4,12,22,0.86) 0%, rgba(0,4,10,0.97) 70%);
+            backdrop-filter: blur(3px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -137,129 +46,102 @@
             transition: opacity 0.8s ease;
         }
         #welcome-screen.hidden { opacity: 0; pointer-events: none; }
-        /* Briefing mode: stay on the console backdrop but drop the controls so the
-           pre-link conversation plays here (DARYA dock floats above on z110). */
-        #welcome-screen.briefing .controls-grid,
-        #welcome-screen.briefing .name-label,
-        #welcome-screen.briefing #operator-name,
-        #welcome-screen.briefing #start-btn,
-        #welcome-screen.briefing .hint { display: none; }
-        #welcome-screen.briefing h2 { opacity: 0.18; transition: opacity 0.8s ease; }
-        #welcome-screen.briefing .eyebrow,
-        #welcome-screen.briefing .tagline { opacity: 0.35; transition: opacity 0.8s ease; }
 
         #welcome-screen .eyebrow {
-            font-family: var(--font-mono);
-            color: var(--aqua-400);
-            letter-spacing: var(--tracking-mega);
-            font-size: 11px;
-            text-transform: uppercase;
-            margin-bottom: 28px;
-        }
-        #welcome-screen h1,
-        #welcome-screen h2 {
-            font-family: var(--font-mono);
-            font-style: italic;
-            font-size: clamp(27px, 4.9vw, 64px);   /* 30% smaller than before */
-            font-weight: 500;
-            letter-spacing: 0;
-            line-height: 0.96;
-            margin: 0;
-            color: var(--aqua-400);
-        }
-        #welcome-screen .tagline {
-            font-family: var(--font-mono);
-            color: var(--text-muted);
-            letter-spacing: var(--tracking-label);
+            color: #ffa500;
+            letter-spacing: 6px;
             font-size: 12px;
             text-transform: uppercase;
-            margin-top: 18px;
+            margin-bottom: 26px;
+        }
+        #welcome-screen h1 {
+            font-size: clamp(34px, 6vw, 76px);
+            font-weight: 700;
+            letter-spacing: 8px;
+            margin: 0;
+            color: #eaf6ff;
+            text-shadow: 0 0 24px rgba(0,210,255,0.35);
+        }
+        #welcome-screen .tagline {
+            color: #7fb0c4;
+            letter-spacing: 3px;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-top: 16px;
         }
         #welcome-screen .premise {
             max-width: 620px;
             line-height: 1.7;
             font-size: 14px;
-            color: var(--text-body);
+            color: #b8ccd8;
             margin: 34px 0 30px;
         }
-        #welcome-screen .premise b { color: var(--amber-400); font-weight: 500; }
+        #welcome-screen .premise b { color: #00d2ff; font-weight: 700; }
 
         .controls-grid {
             display: grid;
-            font-family: var(--font-mono);
+            /* Keyboard instructions stay in Courier for that hardware-readout feel */
+            font-family: 'Courier New', Courier, monospace;
             grid-template-columns: auto auto;
-            gap: 12px 28px;
-            border: var(--border-hair) solid var(--border-default);
-            background: var(--surface-panel);
-            padding: 28px 40px;
-            margin: 48px 0 48px;
-            --cf: var(--chamfer-md);
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf),
-                100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
+            gap: 10px 26px;
+            border: 1px solid rgba(176,196,222,0.25);
+            background: rgba(8,18,28,0.5);
+            padding: 26px 36px;
+            margin: 44px 0 44px;
         }
         .controls-grid .key {
-            color: var(--amber-400);
-            font-weight: 500;
+            color: #ffa500;
+            font-weight: 700;
             text-align: right;
-            letter-spacing: var(--tracking-label);
-            text-transform: uppercase;
-            font-size: 12px;
+            letter-spacing: 1px;
         }
         .controls-grid .desc {
-            color: var(--text-muted);
+            color: #a9c2c9;
             text-align: left;
-            font-size: 12px;
-            letter-spacing: 0.04em;
+            font-size: 13px;
         }
 
-        .name-label { color: var(--text-muted); letter-spacing: var(--tracking-label); font-size: 11px; text-transform: uppercase; margin-bottom: 10px; font-family: var(--font-mono); }
+        .name-label { color: #ffa500; letter-spacing: 4px; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; }
         #operator-name {
-            background: var(--ink-900);
-            border: var(--border-thin) solid var(--border-default);
-            color: var(--text-strong);
-            font-family: var(--font-mono);
-            font-size: 14px;
-            letter-spacing: var(--tracking-label);
-            text-transform: uppercase;
+            background: rgba(8,18,28,0.6);
+            border: 1px solid rgba(176,196,222,0.4);
+            color: #eaf6ff;
+            font-family: inherit;
+            font-size: 15px;
+            letter-spacing: 2px;
             text-align: center;
-            padding: 13px 18px;
-            width: 300px;
-            margin-bottom: 30px;
+            padding: 12px 18px;
+            width: 280px;
+            margin-bottom: 28px;
             outline: none;
-            border-radius: 2px;
-            transition: border-color var(--dur-base) var(--ease-mech), box-shadow var(--dur-base) var(--ease-mech);
+            transition: 0.2s;
         }
-        #operator-name:focus { border-color: var(--aqua-500); box-shadow: 0 0 0 1px var(--aqua-600), 0 0 14px var(--aqua-glow); }
-        #operator-name::placeholder { color: var(--neutral-500); letter-spacing: var(--tracking-label); }
+        #operator-name:focus { border-color: #00d2ff; box-shadow: 0 0 18px rgba(0,210,255,0.3); }
+        #operator-name::placeholder { color: #5c7a88; letter-spacing: 2px; }
 
         #start-btn {
-            --cf: var(--chamfer-sm);
-            background: var(--amber-400);
-            border: var(--border-thin) solid var(--amber-400);
-            color: var(--ink-900);
-            padding: 0 52px; height: 46px;
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid #00d2ff;
+            color: #eaf6ff;
+            padding: 13px 46px;
             cursor: pointer;
-            font-family: var(--font-mono);
-            font-weight: 500;
-            font-size: 13px;
-            letter-spacing: var(--tracking-label);
-            text-transform: uppercase;
-            transition: background var(--dur-fast) var(--ease-mech), box-shadow var(--dur-fast) var(--ease-mech);
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 4px;
+            transition: 0.2s;
         }
         #start-btn:hover {
-            background: var(--amber-300);
-            box-shadow: 0 0 18px var(--amber-glow);
+            background: rgba(0, 210, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0,210,255,0.4);
         }
-        #welcome-screen .hint { margin-top: 24px; font-size: 11px; color: var(--text-faint); letter-spacing: var(--tracking-label); font-family: var(--font-mono); text-transform: uppercase; }
+        #welcome-screen .hint { margin-top: 22px; font-size: 11px; color: #5c7a88; letter-spacing: 2px; }
         #welcome-screen .credit {
             position: absolute;
             bottom: 26px;
-            font-size: 10px;
-            letter-spacing: var(--tracking-label);
-            color: var(--neutral-500);
-            font-family: var(--font-mono);
-            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #4f6c79;
         }
 
         /* ============================================================
@@ -285,39 +167,29 @@
         #hud-layer.active { opacity: 1; }
 
         .hud-panel {
-            --cf: var(--chamfer-md);
             pointer-events: auto;
-            background: var(--surface-panel);
-            border: var(--border-thin) solid var(--border-default);
-            padding: 14px 16px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: var(--tracking-label);
-            text-transform: uppercase;
-            line-height: 1.7;
-            color: var(--text-muted);
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
-        }
-        .hud-panel b {
-            display: block; color: var(--text-faint); font-weight: 500;
-            font-size: 9.5px; letter-spacing: var(--tracking-mega); margin-bottom: 4px;
+            background: rgba(10, 20, 30, 0.4);
+            border: 1px solid rgba(176, 196, 222, 0.3);
+            padding: 15px;
+            backdrop-filter: blur(2px);
+            font-size: 12px;
+            color: #a9c2c9;
         }
 
         #top-left { grid-column: 1; grid-row: 1; }
 
         #upload-btn {
-            background: var(--amber-tint);
-            border: var(--border-thin) solid var(--amber-500);
-            color: var(--amber-300);
+            background: rgba(255, 165, 0, 0.2);
+            border: 1px solid #ffa500;
+            color: #ffa500;
             padding: 8px 12px;
             cursor: pointer;
-            font-family: var(--font-mono);
-            font-weight: 500; letter-spacing: var(--tracking-label); text-transform: uppercase;
+            font-weight: bold;
             width: 100%;
             margin-top: 10px;
-            transition: 0.15s var(--ease-mech);
+            transition: 0.2s;
         }
-        #upload-btn:hover { background: rgba(242,178,51,0.22); color: var(--amber-400); box-shadow: 0 0 16px var(--amber-glow); }
+        #upload-btn:hover { background: rgba(255, 165, 0, 0.5); }
         #file-input { display: none; }
 
         /* Top Right: consolidated feeds + data codes, stacked downward */
@@ -328,26 +200,25 @@
         }
         #top-right .data-block { width: 110px; }
 
-        .data-block { border: var(--border-hair) solid var(--border-default); padding: 5px; text-align: center; font-size: 10px; font-family: var(--font-mono); }
+        .data-block { border: 1px solid rgba(255,255,255,0.2); padding: 5px; text-align: center; font-size: 10px; }
 
         /* ---- Signal-strength meter (satellite feed lock) ---- */
         #signal-meter {
-            --cf: var(--chamfer-sm);
             pointer-events: auto;
-            background: var(--surface-panel);
-            border: var(--border-thin) solid var(--border-default);
+            background: rgba(10, 20, 30, 0.4);
+            border: 1px solid rgba(176, 196, 222, 0.3);
+            backdrop-filter: blur(2px);
             padding: 8px 12px;
             display: flex; align-items: center; gap: 10px;
-            width: 124px; box-sizing: border-box;
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
+            width: 110px; box-sizing: border-box;
         }
         #signal-meter svg { width: 22px; height: 22px; flex: 0 0 auto; }
-        #signal-meter .sig-dish { fill: none; stroke: var(--neutral-400); stroke-width: 6; }
-        #signal-meter .sig-wave { fill: none; stroke: var(--aqua-400); stroke-width: 5; opacity: 0.85; }
+        #signal-meter .sig-dish { fill: none; stroke: #8fb6c7; stroke-width: 6; }
+        #signal-meter .sig-wave { fill: none; stroke: #00d2ff; stroke-width: 5; opacity: 0.85; }
         #signal-right { display: flex; flex-direction: column; gap: 4px; flex: 1; }
         #signal-bars { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
         #signal-bars span {
-            flex: 1; background: rgba(54,224,176,0.16);
+            flex: 1; background: rgba(176,196,222,0.18); border-radius: 1px;
             transition: background 0.2s, opacity 0.2s;
         }
         #signal-bars span:nth-child(1) { height: 35%; }
@@ -355,72 +226,66 @@
         #signal-bars span:nth-child(3) { height: 70%; }
         #signal-bars span:nth-child(4) { height: 85%; }
         #signal-bars span:nth-child(5) { height: 100%; }
-        #signal-bars span.on { background: var(--aqua-400); box-shadow: 0 0 5px var(--aqua-glow); }
-        #signal-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: var(--tracking-label); color: var(--aqua-400); text-align: left; text-transform: uppercase; }
-        #signal-label.weak { color: var(--amber-400); }
+        #signal-bars span.on { background: #00d2ff; box-shadow: 0 0 5px rgba(0,210,255,0.6); }
+        #signal-label { font-size: 8px; letter-spacing: 1.5px; color: #6fe0ff; text-align: left; }
+        #signal-label.weak { color: #ffb454; }
 
         .darya-comms {
-            --cf: var(--chamfer-md);
             pointer-events: auto;
-            background: var(--surface-panel);
-            border: var(--border-thin) solid var(--aqua-600);
-            padding: 18px 23px;
+            background: rgba(10, 20, 30, 0.4);
+            border: 1px solid rgba(176, 196, 222, 0.3);
+            border-left: 3px solid #ffa500;
+            backdrop-filter: blur(2px);
+            padding: 18px 23px 18px 21px;
             font-size: 18.4px;
-            color: var(--text-muted);
+            color: #a9c2c9;
             max-width: 380px;
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
         }
-        .darya-title { font-family: var(--font-mono); color: var(--aqua-400); font-weight: 500; margin-bottom: 9px; font-size: 11px; letter-spacing: var(--tracking-label); text-transform: uppercase; }
-        #darya-text { font-family: var(--font-mono); font-weight: 400; font-size: 18px; line-height: 1.5; letter-spacing: 0.02em; text-transform: none; min-height: 1.5em; color: var(--text-strong); }
+        .darya-title { color: #ffa500; font-weight: bold; margin-bottom: 8px; font-size: 17.25px; letter-spacing: 1px; }
+        #darya-text { font-size: 18.75px; line-height: 1.5; min-height: 1.5em; color: #e8f3f7; }
         /* Priority alert line (e.g. "Human detected on water") flashes red */
         @keyframes daryaAlert {
-            0%, 100% { color: var(--red-400); text-shadow: 0 0 10px var(--red-glow); }
-            50%      { color: var(--red-300); text-shadow: 0 0 2px rgba(242,58,36,0.3); }
+            0%, 100% { color: #ff4646; text-shadow: 0 0 10px rgba(255,40,40,0.8); }
+            50%      { color: #ffd2d2; text-shadow: 0 0 2px rgba(255,40,40,0.3); }
         }
-        #darya-text.alert { animation: daryaAlert 0.6s ease-in-out infinite; font-weight: 500; }
-        .darya-comms.alert { border-color: var(--red-500); }
+        #darya-text.alert { animation: daryaAlert 0.6s ease-in-out infinite; font-weight: 700; }
+        .darya-comms.alert { border-left-color: #ff4646; }
 
         /* Mission accept / decline choice + take-off prompt */
-        #darya-choice { display: none; gap: 10px; margin-top: 14px; }
+        #darya-choice { display: none; gap: 10px; margin-top: 12px; }
         .choice-btn {
-            --cf: var(--chamfer-sm);
             pointer-events: auto; cursor: pointer; flex: 1;
-            font-family: var(--font-mono); font-size: 12px; font-weight: 500;
-            letter-spacing: var(--tracking-label); text-transform: uppercase;
-            padding: 11px 10px; transition: 0.15s var(--ease-mech); color: var(--text-strong);
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
+            font-family: inherit; font-size: 13px; font-weight: 700; letter-spacing: 1px;
+            padding: 9px 10px; border-radius: 6px; transition: 0.15s; color: #eaf6ff;
         }
-        #choice-accept { background: var(--amber-400); border: var(--border-thin) solid var(--amber-400); color: var(--ink-900); }
-        #choice-accept:hover { background: var(--amber-300); box-shadow: 0 0 18px var(--amber-glow); }
-        #choice-decline { background: var(--red-tint); border: var(--border-thin) solid var(--red-500); color: var(--red-300); }
-        #choice-decline:hover { background: rgba(242,58,36,0.24); border-color: var(--red-400); box-shadow: 0 0 16px var(--red-glow); }
+        #choice-accept { background: rgba(0, 210, 255, 0.14); border: 1px solid #00d2ff; }
+        #choice-accept:hover { background: rgba(0, 210, 255, 0.32); box-shadow: 0 0 18px rgba(0,210,255,0.35); }
+        #choice-decline { background: rgba(255, 80, 80, 0.12); border: 1px solid #ff5b5b; color: #ffb3b3; }
+        #choice-decline:hover { background: rgba(255, 80, 80, 0.28); }
 
         /* End-of-demo retrieval choice (shown once the drone reaches the survivor) */
-        #retrieval-choice { display: none; flex-direction: column; gap: 10px; margin-top: 14px; }
-        #retr-lkp { background: var(--aqua-tint); border: var(--border-thin) solid var(--aqua-500); color: var(--aqua-300); }
-        #retr-lkp:hover { background: rgba(54,224,176,0.2); border-color: var(--aqua-400); box-shadow: 0 0 16px var(--aqua-glow); }
-        #retr-object { background: var(--amber-tint); border: var(--border-thin) solid var(--amber-500); color: var(--amber-300); }
-        #retr-object:hover { background: rgba(242,178,51,0.24); border-color: var(--amber-400); box-shadow: 0 0 16px var(--amber-glow); }
+        #retrieval-choice { display: none; flex-direction: column; gap: 10px; margin-top: 12px; }
+        #retr-lkp { background: rgba(0, 210, 255, 0.14); border: 1px solid #00d2ff; }
+        #retr-lkp:hover { background: rgba(0, 210, 255, 0.32); box-shadow: 0 0 18px rgba(0,210,255,0.35); }
+        #retr-object { background: rgba(255, 165, 0, 0.16); border: 1px solid #ffa500; color: #ffd9a0; }
+        #retr-object:hover { background: rgba(255, 165, 0, 0.32); box-shadow: 0 0 18px rgba(255,165,0,0.35); }
         #takeoff-prompt {
-            --cf: var(--chamfer-sm);
-            display: none; margin-top: 14px; padding: 11px 12px;
-            border: var(--border-thin) solid var(--aqua-500);
-            background: var(--aqua-tint); color: var(--aqua-300);
-            font-family: var(--font-mono); font-weight: 500; letter-spacing: var(--tracking-label);
-            text-transform: uppercase; font-size: 12px; text-align: center;
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
+            display: none; margin-top: 12px; padding: 10px 12px;
+            border: 1px solid #7dffae; border-radius: 6px;
+            background: rgba(0, 45, 14, 0.4); color: #7dffae;
+            font-weight: 700; letter-spacing: 1px; font-size: 13px; text-align: center;
         }
         #takeoff-label { animation: lkpFlash 1.1s ease-in-out infinite; }
-        #takeoff-prompt.charging #takeoff-label { animation: none; color: var(--aqua-400); }
+        #takeoff-prompt.charging #takeoff-label { animation: none; color: #aeffce; }
         #takeoff-bar {
-            margin-top: 9px; height: 12px;
-            border: var(--border-hair) solid var(--aqua-500);
-            background: var(--ink-900); overflow: hidden;
+            margin-top: 9px; height: 14px;
+            border: 1px solid #7dffae; border-radius: 7px;
+            background: rgba(0, 30, 10, 0.6); overflow: hidden;
         }
         #takeoff-fill {
             height: 100%; width: 0%;
-            background: var(--aqua-400);
-            box-shadow: 0 0 12px var(--aqua-glow);
+            background: linear-gradient(90deg, #1f9e4e, #7dffae);
+            box-shadow: 0 0 12px rgba(125,255,174,0.7);
         }
         #takeoff-prompt.charging #takeoff-fill { animation: ignFlicker 0.16s steps(2) infinite; }
         @keyframes ignFlicker { 0% { opacity: 1; } 50% { opacity: 0.72; } 100% { opacity: 1; } }
@@ -434,24 +299,16 @@
             width: min(874px, 94vw);
             max-width: none;
             text-align: center;
-            z-index: 110;            /* above the welcome console (z100) during the briefing */
-            display: none;           /* shown once the briefing begins */
-            transition: top 0.6s ease;
+            z-index: 12;
         }
-        /* On the welcome console the conversation sits mid-low; once we connect to the
-           drone (globe view onward) it rises to the top dock. */
-        #darya-dock.dock-welcome { top: 74%; }
         #darya-dock .darya-title { text-align: center; }
         #darya-dock #darya-choice { justify-content: center; }
         /* "next" cue inline at the end of a finished line; only the arrow flashes */
         #next-cue {
             display: inline-block;
             margin-left: 8px;
-            font-family: var(--font-mono);
-            color: var(--aqua-400);
-            font-size: 0.62em;
-            letter-spacing: var(--tracking-label);
-            text-transform: uppercase;
+            color: #00d2ff;
+            font-size: 0.9em;
             white-space: nowrap;
         }
         #next-cue .cue-label { margin-right: 6px; font-size: 0.82em; letter-spacing: 1px; opacity: 0.9; }
@@ -464,28 +321,21 @@
             align-items: flex-start; gap: 12px;
         }
         .telemetry {
-            --cf: var(--chamfer-md);
             pointer-events: auto;
-            background: var(--surface-panel);
-            border: var(--border-thin) solid var(--border-default);
+            background: rgba(6, 14, 22, 0.55);
+            border: 1px solid rgba(176,196,222,0.2);
+            border-radius: 10px;
             padding: 16px 20px;
             min-width: 230px;
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
         }
-        .telemetry .speed { font-family: var(--font-display); font-size: 44px; font-weight: 400; letter-spacing: var(--tracking-display); color: var(--text-strong); line-height: 1; font-variant-numeric: tabular-nums; }
-        .telemetry .speed small { font-family: var(--font-mono); font-size: 11px; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-muted); margin-left: 6px; }
-        .telemetry .row { display: flex; gap: 26px; margin-top: 16px; }
-        .telemetry .row .label { font-family: var(--font-mono); font-size: 9px; letter-spacing: var(--tracking-mega); text-transform: uppercase; color: var(--text-faint); }
-        .telemetry .row .val { font-family: var(--font-mono); font-size: 15px; color: var(--text-body); margin-top: 4px; font-variant-numeric: tabular-nums; }
+        .telemetry .speed { font-size: 40px; font-weight: 300; color: #eaf6ff; line-height: 1; }
+        .telemetry .speed small { font-size: 13px; color: #7fb0c4; margin-left: 4px; }
+        .telemetry .row { display: flex; gap: 26px; margin-top: 14px; }
+        .telemetry .row .label { font-size: 10px; letter-spacing: 1px; color: #5c7a88; }
+        .telemetry .row .val { font-size: 15px; color: #cfe2ec; margin-top: 2px; }
 
         #top-left { grid-column: 1; grid-row: 1; display: flex; justify-content: flex-start; align-items: flex-start; }
-        .coords-box {
-            text-align: left; line-height: 1.9;
-        }
-        .coords-box #gps-lat, .coords-box #gps-lon, .coords-box #target-status {
-            color: var(--text-strong); font-weight: 500;
-        }
-        .coords-box #target-status { color: var(--amber-400); }
+        .coords-box { text-align: left; }
 
         #bottom-right { grid-column: 3; grid-row: 3; display: flex; flex-direction: column; justify-content: flex-end; align-items: flex-end;}
 
@@ -518,14 +368,14 @@
         }
         #svg-overlay.active { opacity: 1; }
 
-        .hud-line { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 1; }
-        .hud-dashed { fill: none; stroke: rgba(255, 255, 255, 0.85); stroke-width: 1; stroke-dasharray: 6 6; }
-        .hud-accent { fill: rgba(255, 255, 255, 0.1); stroke: rgba(255, 255, 255, 0.6); stroke-width: 1; }
-        .hud-text { fill: var(--text-muted); font-family: var(--font-mono); font-size: 13px; letter-spacing: var(--tracking-label); text-transform: uppercase; }
-        .hud-text-large { fill: var(--aqua-400); font-family: var(--font-display); font-size: 24px; font-weight: 500; }
+        .hud-line { fill: none; stroke: rgba(255, 255, 255, 0.8); stroke-width: 1; }
+        .hud-dashed { fill: none; stroke: rgba(255, 255, 255, 0.8); stroke-width: 1; stroke-dasharray: 6 6; }
+        .hud-accent { fill: rgba(255,255,255,0.1); stroke: rgba(255, 255, 255, 0.5); stroke-width: 1; }
+        .hud-text { fill: #a9c2c9; font-family: 'Orbitron', sans-serif; font-size: 14px; }
+        .hud-text-large { fill: #00d2ff; font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: bold; }
 
-        /* Reticle tints to the amber (selected/target) signal when the target leaves the field of view */
-        #reticle-ring.target-offscreen { stroke: var(--amber-400); }
+        /* Dotted reticle ring tints subtle red when the target is out of view */
+        #reticle-ring.target-offscreen { stroke: rgba(255, 70, 70, 0.55); }
 
         /* Left / right collision-proximity warning indicators, pinned to edges */
         .edge-warn {
@@ -548,93 +398,23 @@
         #mission-bar.active { opacity: 1; }
         /* Countdown timer (was the SVG readout) — 10% smaller than the old 24px */
         #utc-time {
-            font-family: var(--font-mono); font-size: 22px; font-weight: 500;
-            color: var(--aqua-400); letter-spacing: var(--tracking-label); font-variant-numeric: tabular-nums;
-            text-shadow: 0 0 6px rgba(0,0,0,0.8);
+            font-family: 'Orbitron', sans-serif; font-size: 21.6px; font-weight: bold;
+            color: #00d2ff; letter-spacing: 2px; text-shadow: 0 0 6px rgba(0,0,0,0.8);
         }
-        body.warn #utc-time { color: var(--red-400); }
-        .battery-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: var(--tracking-mega); color: var(--text-muted); font-weight: 500; text-transform: uppercase;
+        body.warn #utc-time { color: #ff4040; }
+        .battery-label { font-size: 10px; letter-spacing: 2px; color: #8fb0c0; font-weight: 600;
             text-shadow: 0 0 4px rgba(0,0,0,0.8); }
         #battery {
-            width: 240px; height: 8px; border: var(--border-hair) solid var(--aqua-600);
-            background: var(--ink-900); padding: 1px;
+            width: 240px; height: 9px; border: 1px solid rgba(176,196,222,0.45);
+            border-radius: 5px; background: rgba(0,0,0,0.4); padding: 1px;
         }
         #battery-fill {
-            height: 100%; width: 100%; background: var(--aqua-400);
+            height: 100%; width: 100%; background: #7dffae; border-radius: 4px;
             transition: width 0.5s linear, background 0.5s;
         }
         /* Boost: pulse the bar's brightness only — colour stays as-is */
         @keyframes batPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.45; } }
         #battery.boosting { animation: batPulse 0.5s ease-in-out infinite; }
-
-        /* ============================================================
-           CONNECTING-TO-DRONE  (orbital uplink overlay)
-           ============================================================ */
-        #connect-status {
-            position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%);
-            z-index: 13; display: none; flex-direction: column; align-items: center; gap: 8px;
-            pointer-events: none; text-align: center;
-        }
-        #connect-status .cs-title {
-            font-family: var(--font-mono); color: var(--aqua-400); font-weight: 500;
-            letter-spacing: var(--tracking-mega); font-size: 13px; text-transform: uppercase;
-            text-shadow: 0 0 8px var(--aqua-glow);
-            animation: lkpFlash 1.4s ease-in-out infinite;
-        }
-        #connect-status .cs-coords {
-            font-family: var(--font-mono); color: var(--amber-400); font-size: 13px;
-            letter-spacing: var(--tracking-label); font-variant-numeric: tabular-nums;
-        }
-        #connect-status .cs-bar {
-            width: 300px; height: 5px; border: var(--border-hair) solid var(--aqua-600);
-            background: var(--ink-900); padding: 1px;
-        }
-        #connect-status .cs-fill {
-            height: 100%; width: 0%;
-            background: var(--aqua-400);
-            box-shadow: 0 0 10px var(--aqua-glow); transition: width 0.12s linear;
-        }
-        /* During the dive, drop the flight HUD panels and reticle (drone not live yet);
-           keep DARYA's dock and the mission bar. */
-        body.connecting #svg-overlay { opacity: 0; }
-        body.connecting #top-left,
-        body.connecting #top-right,
-        body.connecting #bottom-left,
-        body.connecting #bottom-right { opacity: 0.12; transition: opacity 0.5s ease; }
-
-        /* ============================================================
-           REAR-VIEW CAMERA  (low-grade B&W tail cam, top-left, flight only)
-           ============================================================ */
-        #rear-cam {
-            position: absolute; top: 184px; left: 20px; width: 210px; height: 132px;
-            z-index: 9; display: none; pointer-events: none; overflow: hidden;
-            border: var(--border-thin) solid var(--aqua-600);
-            box-shadow: 0 0 0 1px rgba(0,0,0,0.6), 0 6px 20px rgba(0,0,0,0.55);
-            /* Keep colour; the scanlines (rc-scan) carry the VHS look. Slight lift so the
-               backward-facing feed isn't muddy. */
-            -webkit-backdrop-filter: contrast(1.05) brightness(1.15) saturate(1.15);
-            backdrop-filter: contrast(1.05) brightness(1.15) saturate(1.15);
-        }
-        body.flying #rear-cam { display: block; }
-        #rear-cam .rc-scan {
-            position: absolute; inset: 0; pointer-events: none; mix-blend-mode: multiply;
-            background: repeating-linear-gradient(0deg,
-                rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(0,0,0,0.16) 3px);
-        }
-        /* soft corner vignette for the "cheap camera" feel (lighter than before) */
-        #rear-cam::after {
-            content: ""; position: absolute; inset: 0; pointer-events: none;
-            box-shadow: inset 0 0 22px 4px rgba(0,0,0,0.35);
-        }
-        #rear-cam .rc-label {
-            position: absolute; top: 4px; left: 6px; z-index: 2;
-            font-family: var(--font-mono); font-size: 8px; letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-strong); text-shadow: 0 0 3px #000;
-        }
-        #rear-cam .rc-rec {
-            position: absolute; top: 4px; right: 6px; z-index: 2;
-            font-family: var(--font-mono); font-size: 8px; letter-spacing: var(--tracking-label); color: var(--red-400); text-shadow: 0 0 3px #000;
-            animation: lkpFlash 1.3s ease-in-out infinite;
-        }
 
         /* ============================================================
            WATER-PROXIMITY WARNING
@@ -650,38 +430,35 @@
 
         /* Flash the HUD vector graphics + key readouts red while too low */
         body.warn .hud-line,
-        body.warn .hud-dashed { stroke: var(--red-400) !important; }
-        body.warn .hud-accent { stroke: var(--red-400) !important; fill: var(--red-tint) !important; }
-        body.warn .hud-text { fill: var(--red-300) !important; }
-        body.warn .hud-text-large { fill: var(--red-400) !important; }
+        body.warn .hud-dashed { stroke: #ff4040 !important; }
+        body.warn .hud-accent { stroke: #ff4040 !important; fill: rgba(255,60,60,0.12) !important; }
+        body.warn .hud-text { fill: #ff7b7b !important; }
+        body.warn .hud-text-large { fill: #ff4040 !important; }
         body.warn .telemetry .speed,
-        body.warn #alt-val { color: var(--red-300) !important; }
+        body.warn #alt-val { color: #ff5b5b !important; }
         body.warn #svg-overlay { animation: lkpFlash 0.7s ease-in-out infinite; }
 
         #warn-cluster {
-            position: absolute; left: 50%; top: 30%; transform: translateX(-50%); z-index: 60;
-            display: none; flex-direction: column; align-items: center; gap: 8px;
+            position: absolute; right: 24px; bottom: 150px; z-index: 60;
+            display: none; flex-direction: column; align-items: flex-end; gap: 8px;
             pointer-events: none;
         }
         body.warn #warn-cluster { display: flex; }
         #warn-label {
-            font-family: var(--font-mono); color: var(--red-400); font-weight: 500;
-            letter-spacing: var(--tracking-label); font-size: 11px; text-transform: uppercase;
+            color: #ff5b5b; font-weight: 700; letter-spacing: 2px; font-size: 12px;
             text-shadow: 0 0 6px rgba(0,0,0,0.8);
             animation: lkpFlash 0.7s ease-in-out infinite;
         }
         #override-btn {
-            --cf: var(--chamfer-sm);
             pointer-events: auto; cursor: pointer;
-            background: var(--red-tint); border: var(--border-thin) solid var(--red-500); color: var(--red-300);
-            padding: 12px 20px; font-family: var(--font-mono); font-weight: 500; letter-spacing: var(--tracking-label);
-            text-transform: uppercase; font-size: 12px; transition: 0.15s var(--ease-mech);
+            background: rgba(50, 0, 0, 0.6); border: 1px solid #ff4040; color: #ff7b7b;
+            padding: 12px 20px; font-family: inherit; font-weight: 700; letter-spacing: 2px;
+            font-size: 13px; border-radius: 6px; transition: 0.15s;
             animation: lkpFlash 0.9s ease-in-out infinite;
-            clip-path: polygon(0 0, calc(100% - var(--cf)) 0, 100% var(--cf), 100% 100%, var(--cf) 100%, 0 calc(100% - var(--cf)));
         }
-        #override-btn:hover { background: rgba(242,58,36,0.24); border-color: var(--red-400); box-shadow: 0 0 16px var(--red-glow); }
+        #override-btn:hover { background: rgba(80, 0, 0, 0.7); }
         #override-btn.engaged {
-            background: var(--aqua-tint); border-color: var(--aqua-500); color: var(--aqua-300);
+            background: rgba(0, 45, 14, 0.6); border-color: #3bd16f; color: #7dffae;
             animation: none;
         }
 
@@ -740,13 +517,6 @@
         <div id="battery"><div id="battery-fill"></div></div>
     </div>
 
-    <!-- "Connecting to drone" uplink status (shown during the orbital dive) -->
-    <div id="connect-status">
-        <div class="cs-title">ESTABLISHING UPLINK</div>
-        <div class="cs-coords">— · —</div>
-        <div class="cs-bar"><div class="cs-fill"></div></div>
-    </div>
-
     <!-- Water-proximity warning -->
     <div id="proximity-vignette"></div>
 
@@ -763,7 +533,7 @@
          ============================================================ -->
     <div id="welcome-screen">
         <div class="eyebrow">Interactive Demo</div>
-        <h2>Last Known Position</h2>
+        <h2>LAST KNOWN POSITION</h2>
         <div class="tagline">Welcome to your first day as drone teleoperator on open seas. </div>
 
         <!--<p class="premise">
@@ -792,34 +562,27 @@
 
     <!-- SVG Vector Graphics overlay -->
     <svg id="svg-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
-        <defs>
-            <linearGradient id="reticleGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#36E0B0"/>
-                <stop offset="1" stop-color="#F2B233"/>
-            </linearGradient>
-        </defs>
-
         <path class="hud-dashed" d="M 460 462 A 600 600 0 0 1 1460 462" />
         <path class="hud-line" d="M 480 472 A 580 580 0 0 1 1440 472" stroke-dasharray="2 10" stroke-width="4"/>
 
-        <!-- Halo reticle: a single rounded square with a crosshair extending beyond it,
-             stroked with the cyan→magenta thermal gradient. #reticle-ring keeps its id so
-             the offscreen-target tint still toggles via CSS. -->
-        <rect id="reticle-ring" x="875" y="455" width="170" height="170" rx="0"
-              fill="none" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.9"/>
-        <line x1="960" y1="405" x2="960" y2="495" stroke="#ffffff" stroke-width="1.25" stroke-opacity="0.9"/>
-        <line x1="960" y1="585" x2="960" y2="675" stroke="#ffffff" stroke-width="1.25" stroke-opacity="0.9"/>
-        <line x1="840" y1="540" x2="930" y2="540" stroke="#ffffff" stroke-width="1.25" stroke-opacity="0.9"/>
-        <line x1="990" y1="540" x2="1080" y2="540" stroke="#ffffff" stroke-width="1.25" stroke-opacity="0.9"/>
-        <circle cx="960" cy="540" r="3" fill="#F2B233"/>
+        <circle id="reticle-ring" cx="960" cy="540" r="100" class="hud-dashed" />
+        <circle cx="960" cy="540" r="75" class="hud-line" />
+        <circle cx="960" cy="540" r="50" class="hud-line" />
+        <circle cx="960" cy="540" r="3" class="hud-line" />
 
-        <!-- Target bearing pointer: an amber (selected/target) arrow inside the reticle
-             pointing toward the tracked target. Hidden when target leaves view (reticle tints). -->
+        <!-- Target bearing pointer: a red arrow inside the reticle pointing toward the
+             tracked target. Hidden when the target leaves the field of view (then the
+             dotted reticle ring tints red instead). The arrow points up at rotation 0. -->
         <g id="hud-target" visibility="hidden">
-            <polygon id="ht-arrow" points="0,-9 6,7 0,3 -6,7"
-                     fill="#F2B233" stroke="#F6CE6A" stroke-width="1"
-                     style="filter: drop-shadow(0 0 4px rgba(242,178,51,0.8));" />
+            <polygon id="ht-arrow" points="0,-16 11,12 0,5 -11,12"
+                     fill="#ff3b3b" stroke="#ff7a7a" stroke-width="1.5"
+                     style="filter: drop-shadow(0 0 4px rgba(255,40,40,0.7));" />
         </g>
+
+        <line x1="960" y1="525" x2="960" y2="500" class="hud-line" />
+        <line x1="960" y1="555" x2="960" y2="580" class="hud-line" />
+        <line x1="945" y1="540" x2="920" y2="540" class="hud-line" />
+        <line x1="975" y1="540" x2="1000" y2="540" class="hud-line" />
 
         <line x1="760" y1="540" x2="840" y2="540" class="hud-line" />
         <line x1="1080" y1="540" x2="1160" y2="540" class="hud-line" />
@@ -854,7 +617,7 @@
                     <path class="sig-dish" d="M14 50 A30 30 0 0 1 50 14" />
                     <path class="sig-wave" d="M22 50 A18 18 0 0 1 40 32" />
                     <path class="sig-wave" d="M30 50 A8 8 0 0 1 38 42" opacity="0.55" />
-                    <circle cx="48" cy="50" r="4" fill="#36E0B0" stroke="none" />
+                    <circle cx="48" cy="50" r="4" fill="#00d2ff" stroke="none" />
                 </svg>
                 <div id="signal-right">
                     <div id="signal-bars"><span></span><span></span><span></span><span></span><span></span></div>
@@ -902,10 +665,9 @@
         <!-- Top Left: GPS Coordinates -->
         <div id="top-left">
             <div class="hud-panel coords-box">
-                <b>GPS COORDINATES</b><br>
-                LAT <span id="gps-lat">34.5820° N</span><br>
-                LON <span id="gps-lon">21.0543° E</span><br>
-                TARGET <span id="target-status">SEARCHING</span>
+                <b style="color:#ffa500;">GPS COORDINATES</b><br>
+                A: 34.5820 N | B: 21.0543 E<br>
+                Target Status: <span id="target-status">SEARCHING</span>
             </div>
         </div>
 
@@ -916,35 +678,23 @@
             </div>
         </div>
 
-    </div>
-
-    <!-- DARYA copilot dialogue. Lives ABOVE the welcome screen (own top-level node,
-         high z-index) so the pre-link briefing plays on the welcome "console", then
-         over the connecting globe, then in flight. Hidden until the briefing begins. -->
-    <div id="darya-dock" class="hud-panel darya-comms">
-        <div class="darya-title">DARYA (AI Copilot)</div>
-        <div id="darya-text">Scanning open waters. Waiting for operator input or target upload.</div>
-        <div id="darya-choice">
-            <button id="choice-accept" class="choice-btn">A · Yes, let's save some lives.</button>
-            <button id="choice-decline" class="choice-btn">B · No, pass on the job.</button>
+        <!-- Bottom Center: DARYA copilot dialogue (below the drone) -->
+        <div id="darya-dock" class="hud-panel darya-comms">
+            <div class="darya-title">DARYA (AI Copilot)</div>
+            <div id="darya-text">Scanning open waters. Waiting for operator input or target upload.</div>
+            <div id="darya-choice">
+                <button id="choice-accept" class="choice-btn">A · Yes, let's save some lives.</button>
+                <button id="choice-decline" class="choice-btn">B · No, pass on the job.</button>
+            </div>
+            <div id="takeoff-prompt">
+                <div id="takeoff-label">▸ HOLD SPACE TO SPIN UP ROTORS</div>
+                <div id="takeoff-bar"><div id="takeoff-fill"></div></div>
+            </div>
+            <div id="retrieval-choice">
+                <button id="retr-lkp" class="choice-btn">Update Last Known Position &amp; return to boat</button>
+                <button id="retr-object" class="choice-btn">Retrieve Object</button>
+            </div>
         </div>
-        <div id="takeoff-prompt">
-            <div id="takeoff-label">▸ HOLD SPACE TO SPIN UP ROTORS</div>
-            <div id="takeoff-bar"><div id="takeoff-fill"></div></div>
-        </div>
-        <div id="retrieval-choice">
-            <button id="retr-lkp" class="choice-btn">Update Last Known Position &amp; return to boat</button>
-            <button id="retr-object" class="choice-btn">Retrieve Object</button>
-        </div>
-    </div>
-
-    <!-- Rear-view camera feed (top-left): a low-grade B&W tail camera, only in flight.
-         The 3D view is scissor-rendered into this rect; the grayscale/contrast comes
-         from backdrop-filter, scanlines + label sit on top. -->
-    <div id="rear-cam">
-        <div class="rc-scan"></div>
-        <div class="rc-label">REAR CAM · DRN-TAIL</div>
-        <div class="rc-rec">● REC</div>
     </div>
 
     <!-- Main Logic -->
@@ -962,41 +712,7 @@
         import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
         let scene, camera, renderer, water, sun, sky;
-        let composer, feedPass, renderPass; // post-processing: digital glitch / grain / aberration
-
-        // --- "Connecting to drone" globe phase ---
-        // After the operator accepts the mission we cut to an orbital view of Earth
-        // (Blue-Marble sphere + clouds + atmosphere + stars) and dive into a random
-        // point in the Mediterranean, then glitch-hand-off to the live drone feed.
-        // It renders through the SAME composer (swapping RenderPass.scene), so the
-        // feed shader / grain / boot-glitch all apply — the satellite view reads as
-        // part of the same downlink.
-        let globeScene = null, globeCamera = null, globeGroup = null, cloudMesh = null;
-        // --- line-drawing globe (Meridian) state ---
-        let coastLines = [];             // array of {line, count} for the trace-in animation
-        let graticule = null;            // lat/lon grid lines (faint)
-        let scanMeridian = null;         // bright sweeping meridian
-        let globeRim = null;             // luminous limb / atmosphere ring
-        let coastlinesReady = false;     // GeoJSON parsed & meshes built
-        let connecting = false;          // globe dive currently playing
-        let connectStart = 0;            // performance.now() when the dive began
-        let connectHandoff = false;      // the end-of-dive glitch burst has fired
-        const CONNECT_DUR = 7000;        // length of the orbital dive (ms)
-        const GLOBE_R = 100;             // globe radius (world units)
-        const GLOBE_FAR = 380;           // camera distance at the start of the dive
-        const GLOBE_NEAR = 101.6;        // camera distance at max zoom (just off the surface)
-        // Target orientation that frames the Mediterranean toward the camera. Tuned by
-        // eye against the earth_atmos texture (see LON_OFFSET) and jittered per run.
-        const GLOBE_LON_OFFSET = -90;    // deg: rotation.y = OFFSET - lon frames lon toward +Z
-        let globeTargetRot = { x: 0, y: 0 };
-        let globeStartRot = { x: 0, y: 0 };
-        let globeMarker = null;          // beacon on the globe marking the launch vessel
-        let beginTakeoffSequence = null; // hook: resume the briefing flow after handoff
-        let respawnFromDrown = null;     // hook: re-arm the spin-up bar after a water crash
-        let devSkip = null;              // hook: Cmd/Ctrl+D dev shortcut → straight to flight
-
-        // --- Rear-view tail camera (small B&W feed, top-left) ---
-        let rearCam = null;              // looks backward from the drone; scissor-rendered
+        let composer, feedPass;          // post-processing: digital glitch / grain / aberration
         let bootStart = 0;               // performance.now() when the feed began stabilizing
         let nextGlitchAt = 0;            // scheduled time of the next random intensity burst
         let burstStart = 0, burstDur = 0;// current burst window (random mid-mission flare-up)
@@ -1017,9 +733,6 @@
         let takingOff = false;         // smooth liftoff tween playing (before control)
         let takeoffT0 = 0;             // performance.now() when liftoff began
         let takeoffToYaw = 0;          // heading to ease into during liftoff
-        let takeoffRespawn = false;    // current liftoff is a post-drown re-ignition
-        let takeoffFromY = 18;         // altitude the liftoff tween starts from
-        let takeoffToY = 34;           // altitude it eases up to
         const TAKEOFF_LIFT = 16;       // how far the drone rises off the dock
         const TAKEOFF_DUR = 2000;      // liftoff duration (ms)
         let playerName = 'Operator';   // name entered on the welcome screen
@@ -1065,13 +778,11 @@
         let visBank = 0, visPitch = 0;
 
         // --- Water-proximity safety ---
-        const WARN_ALT = 15;        // below this altitude -> proximity warning
-        const SAFE_FLOOR = 12;       // can't descend past this without override (keeps the drone
-                                     // clearly above the water — at ~5m the model touches the surface)
-        const WATER_HIT = 1.5;      // with override on, touching this = drown -> re-ignite
+        const WARN_ALT = 50;        // below this altitude -> proximity warning
+        const SAFE_FLOOR = 25;      // can't descend past this without override
+        const OVERRIDE_FLOOR = 4;   // with override engaged, skim just above the water
         let overrideEngaged = false;
         let wasWarning = false;     // tracks warn-state transitions (for DARYA)
-        let drowned = false;        // drone went into the sea; awaiting re-ignition
 
         // --- Framing tuning (where the drone sits on screen) ---
         const DRONE_OFFSET_Y = -3.2;     // below camera centre (sits low in frame)
@@ -1156,7 +867,6 @@
             scene.add(rim);
 
             setupComposer();
-            buildGlobe();
             createTarget();
             loadDrone();
             loadDock();
@@ -1249,8 +959,7 @@
 
         function setupComposer() {
             composer = new EffectComposer(renderer);
-            renderPass = new RenderPass(scene, camera);
-            composer.addPass(renderPass);
+            composer.addPass(new RenderPass(scene, camera));
             feedPass = new ShaderPass(FeedShader);
             composer.addPass(feedPass);
             composer.addPass(new OutputPass());   // tone mapping + sRGB on the final image
@@ -1270,13 +979,6 @@
             droneGroup.position.set(0, DRONE_OFFSET_Y, DRONE_OFFSET_Z);
             camera.add(droneGroup);   // pin the drone to the camera
             scene.add(camera);        // camera must be in the scene for its children to render
-
-            // Rear-view tail camera: parented to the drone-camera, rotated to look back
-            // along the flight path (slightly down so the wake/water fills the frame).
-            rearCam = new THREE.PerspectiveCamera(74, 210 / 132, 0.5, 60000);
-            rearCam.rotation.set(0.12, Math.PI, 0);
-            rearCam.position.set(0, 0.5, 2);
-            camera.add(rearCam);
 
             const loader = new OBJLoader();
             loader.load(
@@ -1423,345 +1125,6 @@
             }, undefined, (e) => console.warn('Charger load failed', e));
         }
 
-        // ----- "Connecting to drone" orbital globe -----
-        // A self-contained scene (its own camera) holding a textured Earth, a cloud
-        // shell, an additive atmosphere rim and a starfield. Rendered through the main
-        // composer during the connect phase by pointing renderPass at it.
-        // The globe is now an elegant LINE DRAWING (Meridian language): light hairlines
-        // on the ink-900 void — a faint lat/lon graticule, aqua coastlines that trace
-        // themselves on, a luminous limb, and a sweeping scan meridian. No photoreal
-        // texture, so the satellite→stylized-ocean handoff stays consistent.
-        function buildGlobe() {
-            globeScene = new THREE.Scene();
-            globeScene.background = new THREE.Color(0x04080A);   // --ink-900 void
-            globeCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 6000);
-            globeCamera.position.set(0, 0, GLOBE_FAR);
-
-            // Spin/zoom both ride on this group so the target point rotates into frame.
-            globeGroup = new THREE.Group();
-            globeScene.add(globeGroup);
-
-            // Opaque interior shell, a hair under the line radius — occludes the far
-            // hemisphere's lines so the sphere reads as solid (front-facing lines only),
-            // exactly like the reference drawing. Near-ink so it disappears into the void.
-            const shell = new THREE.Mesh(
-                new THREE.SphereGeometry(GLOBE_R * 0.992, 96, 96),
-                new THREE.MeshBasicMaterial({ color: 0x060d12 })
-            );
-            globeGroup.add(shell);
-
-            // --- Graticule: lat/lon grid, faint neutral hairlines ---
-            graticule = buildGraticule(GLOBE_R * 1.001);
-            graticule.material.opacity = 0;          // faded in during the dive
-            globeGroup.add(graticule);
-
-            // --- Coastlines: aqua hairlines, fetched + traced on (async) ---
-            loadCoastlines(GLOBE_R * 1.002);
-
-            // --- Luminous limb: a thin aqua fresnel ring at the silhouette ---
-            globeRim = new THREE.Mesh(
-                new THREE.SphereGeometry(GLOBE_R * 1.04, 96, 96),
-                new THREE.ShaderMaterial({
-                    uniforms: { glow: { value: new THREE.Color(0x36E0B0) }, strength: { value: 0.0 } },
-                    vertexShader: `varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
-                    fragmentShader: `uniform vec3 glow; uniform float strength; varying vec3 vN;
-                        void main(){ float i = pow(1.0 - abs(dot(vN, vec3(0.0,0.0,1.0))), 3.5);
-                        gl_FragColor = vec4(glow, 1.0) * clamp(i,0.0,1.0) * strength; }`,
-                    side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
-                })
-            );
-            globeScene.add(globeRim);
-
-            // --- Scan meridian: a bright pole-to-pole arc that sweeps around the globe ---
-            const scanPts = [];
-            for (let i = 0; i <= 64; i++) {
-                const ph = (i / 64) * Math.PI - Math.PI / 2;     // -90°..+90° latitude
-                scanPts.push(new THREE.Vector3(0, Math.sin(ph), Math.cos(ph)).multiplyScalar(GLOBE_R * 1.004));
-            }
-            scanMeridian = new THREE.Line(
-                new THREE.BufferGeometry().setFromPoints(scanPts),
-                new THREE.LineBasicMaterial({ color: 0x6BE7C2, transparent: true, opacity: 0.0, depthWrite: false })
-            );
-            globeGroup.add(scanMeridian);
-
-            // Sparse, dim starfield for depth (faint neutral, not photoreal white).
-            const starGeo = new THREE.BufferGeometry();
-            const starN = 900, starPos = new Float32Array(starN * 3);
-            for (let i = 0; i < starN; i++) {
-                const r = 2600 + Math.random() * 800;
-                const th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
-                starPos[i*3]   = r * Math.sin(ph) * Math.cos(th);
-                starPos[i*3+1] = r * Math.sin(ph) * Math.sin(th);
-                starPos[i*3+2] = r * Math.cos(ph);
-            }
-            starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-            globeScene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x4a5e62, size: 2.2, sizeAttenuation: true, transparent: true, opacity: 0.6 })));
-
-            // Launch-vessel beacon: a reticle sprite + label, parented to the globe so
-            // it tracks the surface point. Positioned/shown in startConnecting().
-            globeMarker = new THREE.Group();
-            globeMarker.visible = false;
-            const reticle = new THREE.Sprite(new THREE.SpriteMaterial({
-                map: makeReticleTexture(), transparent: true, depthTest: false, depthWrite: false
-            }));
-            reticle.scale.setScalar(11);
-            reticle.name = 'reticle';
-            globeMarker.add(reticle);
-            const label = new THREE.Sprite(new THREE.SpriteMaterial({
-                map: makeLabelTexture('LAUNCH VESSEL'), transparent: true, depthTest: false, depthWrite: false
-            }));
-            label.center.set(0.5, 0);          // anchor above the reticle
-            label.scale.set(26, 6.5, 1);
-            label.position.set(0, 6, 0);
-            globeMarker.add(label);
-            globeGroup.add(globeMarker);
-        }
-
-        // Build a lat/lon graticule as a single LineSegments object (faint neutral).
-        // Meridians every 15°, parallels every 15°.
-        function buildGraticule(radius) {
-            const pts = [];
-            const seg = (lat1, lon1, lat2, lon2) => {
-                pts.push(globeLatLonToLocal(lat1, lon1, radius));
-                pts.push(globeLatLonToLocal(lat2, lon2, radius));
-            };
-            for (let lon = -180; lon < 180; lon += 15) {        // meridians
-                for (let lat = -90; lat < 90; lat += 3) seg(lat, lon, lat + 3, lon);
-            }
-            for (let lat = -75; lat <= 75; lat += 15) {         // parallels
-                for (let lon = -180; lon < 180; lon += 3) seg(lat, lon, lat, lon + 3);
-            }
-            const g = new THREE.BufferGeometry().setFromPoints(pts);
-            return new THREE.LineSegments(g, new THREE.LineBasicMaterial({
-                color: 0x38484B, transparent: true, opacity: 0.55, depthWrite: false
-            }));
-        }
-
-        // Fetch a low-res world coastline GeoJSON and build one aqua Line per feature,
-        // each with a growable drawRange so the continents "draw on" during the dive.
-        // Falls back silently to just the graticule if the fetch fails (offline).
-        function loadCoastlines(radius) {
-            const url = 'https://raw.githubusercontent.com/martynafford/natural-earth-geojson/master/110m/physical/ne_110m_coastline.json';
-            fetch(url).then(r => r.json()).then(geo => {
-                const mat = () => new THREE.LineBasicMaterial({ color: 0x6BE7C2, transparent: true, opacity: 0.92, depthWrite: false });
-                const addLine = (coords) => {
-                    if (coords.length < 2) return;
-                    const pts = coords.map(([lon, lat]) => globeLatLonToLocal(lat, lon, radius));
-                    const g = new THREE.BufferGeometry().setFromPoints(pts);
-                    const line = new THREE.Line(g, mat());
-                    line.geometry.setDrawRange(0, 0);    // start hidden, traced on each frame
-                    globeGroup.add(line);
-                    coastLines.push({ line, count: pts.length });
-                };
-                (geo.features || []).forEach(f => {
-                    const gm = f.geometry; if (!gm) return;
-                    if (gm.type === 'LineString') addLine(gm.coordinates);
-                    else if (gm.type === 'MultiLineString') gm.coordinates.forEach(addLine);
-                });
-                coastlinesReady = true;
-            }).catch(() => { coastlinesReady = false; });
-        }
-
-        // Local position on the globe sphere for a given lat/long (matches the
-        // SphereGeometry UV mapping used by the earth texture).
-        function globeLatLonToLocal(lat, lon, radius) {
-            const a = Math.PI + THREE.MathUtils.degToRad(lon);
-            const theta = Math.PI / 2 - THREE.MathUtils.degToRad(lat);
-            return new THREE.Vector3(
-                -radius * Math.cos(a) * Math.sin(theta),
-                 radius * Math.cos(theta),
-                 radius * Math.sin(a) * Math.sin(theta)
-            );
-        }
-
-        // Canvas-drawn target reticle for the beacon — Meridian language: aqua corner
-        // brackets framing a thin square, with an amber (selected/target) centre dot.
-        function makeReticleTexture() {
-            const s = 128, c = document.createElement('canvas'); c.width = c.height = s;
-            const x = c.getContext('2d'), m = s / 2;
-            x.lineCap = 'square';
-            // Thin inner square frame (aqua)
-            x.strokeStyle = '#36E0B0'; x.lineWidth = 2; x.globalAlpha = 0.55;
-            x.strokeRect(m - 34, m - 34, 68, 68);
-            // Corner brackets (brighter, thicker)
-            x.globalAlpha = 1; x.lineWidth = 4;
-            const L = 20, o = 44;            // bracket arm length / offset from centre
-            const corner = (cx, cy, sx, sy) => {
-                x.beginPath();
-                x.moveTo(cx, cy + sy * L); x.lineTo(cx, cy);
-                x.lineTo(cx + sx * L, cy); x.stroke();
-            };
-            corner(m - o, m - o,  1,  1);    // TL
-            corner(m + o, m - o, -1,  1);    // TR
-            corner(m - o, m + o,  1, -1);    // BL
-            corner(m + o, m + o, -1, -1);    // BR
-            // Crosshair ticks toward the centre
-            x.lineWidth = 2; x.globalAlpha = 0.85;
-            [[0,-1],[0,1],[-1,0],[1,0]].forEach(([dx,dy]) => {
-                x.beginPath();
-                x.moveTo(m + dx * 26, m + dy * 26);
-                x.lineTo(m + dx * 14, m + dy * 14); x.stroke();
-            });
-            // Amber centre dot
-            x.globalAlpha = 1; x.fillStyle = '#F2B233';
-            x.beginPath(); x.arc(m, m, 5, 0, Math.PI * 2); x.fill();
-            const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
-        }
-
-        // Canvas-drawn mono label for the beacon (Geom Graphic, wide-tracked, aqua).
-        function makeLabelTexture(text) {
-            const w = 512, h = 128, c = document.createElement('canvas'); c.width = w; c.height = h;
-            const x = c.getContext('2d');
-            const spaced = text.toUpperCase().split('').join('  ');  // letter-tracking
-            x.font = '500 44px "Geom Graphic W03", monospace';
-            x.textAlign = 'center'; x.textBaseline = 'middle';
-            x.shadowColor = 'rgba(0,0,0,0.9)'; x.shadowBlur = 8;
-            x.fillStyle = '#6BE7C2';
-            x.fillText(spaced, w / 2, h / 2);
-            const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
-        }
-
-        // Begin the orbital dive. Picks a random Mediterranean lat/long, frames it
-        // toward the camera, swaps the composer to the globe scene and lets
-        // updateConnecting() drive the zoom each frame.
-        function startConnecting() {
-            if (!globeScene) return;
-            connecting = true;
-            connectHandoff = false;
-            connectStart = performance.now();
-
-            // Random point in the central/eastern Mediterranean (over water).
-            const lat = 34 + Math.random() * 5;     // 34–39 °N
-            const lon = 12 + Math.random() * 16;    // 12–28 °E
-            globeTargetRot.x = THREE.MathUtils.degToRad(lat);
-            globeTargetRot.y = THREE.MathUtils.degToRad(GLOBE_LON_OFFSET - lon);
-            // Start a touch off-target and zoomed out, then spin/settle into the spot.
-            globeStartRot.x = globeTargetRot.x - 0.16;
-            globeStartRot.y = globeTargetRot.y - 0.62;
-            globeGroup.rotation.set(globeStartRot.x, globeStartRot.y, 0);
-            globeCamera.position.set(0, 0, GLOBE_FAR);
-            globeCamera.aspect = window.innerWidth / window.innerHeight;
-            globeCamera.updateProjectionMatrix();
-
-            // Reset the line-drawing animation so a re-run draws fresh.
-            if (graticule) graticule.material.opacity = 0;
-            if (scanMeridian) scanMeridian.material.opacity = 0;
-            if (globeRim) globeRim.material.uniforms.strength.value = 0;
-            coastLines.forEach(({ line }) => line.geometry.setDrawRange(0, 0));
-
-            // Beacon for the launch vessel, pinned to the target surface point.
-            if (globeMarker) {
-                globeMarker.position.copy(globeLatLonToLocal(lat, lon, GLOBE_R * 1.004));
-                globeMarker.visible = true;
-            }
-
-            // Now reveal the globe: drop the welcome console (only here, after the
-            // pre-link briefing has played on it).
-            const wel = document.getElementById('welcome-screen');
-            if (wel) { wel.classList.remove('briefing'); wel.classList.add('hidden'); }
-            // DARYA's dock rises from its welcome-console position to the top dock.
-            document.getElementById('darya-dock').classList.remove('dock-welcome');
-
-            // Point the composer at the globe; reset the feed so the satellite link
-            // "boots" with its own glitch as it comes online.
-            renderPass.scene = globeScene;
-            renderPass.camera = globeCamera;
-            bootStart = performance.now();
-            nextGlitchAt = 0; burstStart = 0;
-
-            document.body.classList.add('connecting');
-            const cs = document.getElementById('connect-status');
-            if (cs) {
-                cs.style.display = 'flex';
-                const c = cs.querySelector('.cs-coords');
-                if (c) c.textContent = `${lat.toFixed(4)}° N   ${lon.toFixed(4)}° E`;
-            }
-            if (daryaSay) daryaSay('Acquiring satellite uplink. Locating your drone…');
-        }
-
-        // Per-frame globe dive: accelerate the camera inward, spin the target point to
-        // centre, then fire a glitch burst and hand off to the live drone scene.
-        function updateConnecting(now) {
-            let p = (now - connectStart) / CONNECT_DUR;
-            if (p > 1) p = 1;
-
-            // Distance: ease inward, accelerating toward the surface (Google-Earth dive).
-            globeCamera.position.z = GLOBE_FAR + (GLOBE_NEAR - GLOBE_FAR) * Math.pow(p, 1.85);
-
-            // Orientation settles into the target over the first ~75% of the dive.
-            const rp = Math.min(1, p / 0.75);
-            const es = rp * rp * (3 - 2 * rp);   // smoothstep
-            globeGroup.rotation.x = globeStartRot.x + (globeTargetRot.x - globeStartRot.x) * es;
-            globeGroup.rotation.y = globeStartRot.y + (globeTargetRot.y - globeStartRot.y) * es;
-
-            // --- Line-drawing reveal, futuristic + elegant ---
-            // Graticule fades in fast at the start.
-            if (graticule) graticule.material.opacity = 0.55 * Math.min(1, p / 0.12);
-            // Luminous limb breathes in over the first third.
-            if (globeRim) globeRim.material.uniforms.strength.value = 0.9 * Math.min(1, p / 0.32);
-            // Coastlines trace themselves on over the first ~45% of the dive (eased).
-            const dp = Math.min(1, p / 0.45);
-            const drawT = dp * dp * (3 - 2 * dp);               // smoothstep
-            for (const c of coastLines) c.line.geometry.setDrawRange(0, Math.ceil(c.count * drawT));
-            // Scan meridian sweeps around, brightest mid-reveal, gone before the handoff.
-            if (scanMeridian) {
-                scanMeridian.rotation.y = now * 0.0016;
-                scanMeridian.material.opacity = 0.85 * Math.sin(Math.min(1, p / 0.8) * Math.PI);
-            }
-
-            // Pulse the launch-vessel beacon, then fade it out by mid-dive so the
-            // sprites don't balloon over the whole frame as the camera dives into them.
-            if (globeMarker) {
-                const fadeIn = Math.min(1, Math.max(0, (p - 0.18) / 0.12));   // appears as the lock completes
-                const fadeOut = Math.max(0, Math.min(1, (0.62 - p) / 0.18));
-                const op = fadeIn * fadeOut;
-                globeMarker.traverse(o => { if (o.material) o.material.opacity = op; });
-                globeMarker.visible = op > 0.01;
-                const reticle = globeMarker.getObjectByName('reticle');
-                if (reticle) reticle.scale.setScalar(11 * (1 + Math.sin(now * 0.006) * 0.12));
-            }
-
-            // Progress bar.
-            const fill = document.querySelector('#connect-status .cs-fill');
-            if (fill) fill.style.width = (p * 100).toFixed(1) + '%';
-
-            // Near the surface, fire the handoff glitch burst once.
-            if (!connectHandoff && p > 0.8) {
-                connectHandoff = true;
-                burstStart = now; burstDur = 1100;
-                const t = document.querySelector('#connect-status .cs-title');
-                if (t) t.textContent = 'DRONE FEED ACQUIRED';
-            }
-
-            if (p >= 1) finishConnecting();
-        }
-
-        // Swap back to the live world, re-boot the feed (drone downlink coming online)
-        // and resume the briefing flow into the take-off prompt.
-        function finishConnecting() {
-            connecting = false;
-            renderPass.scene = scene;
-            renderPass.camera = camera;
-            if (globeMarker) globeMarker.visible = false;
-            bootStart = performance.now();        // drone feed boots with the glitch
-            nextGlitchAt = 0; burstStart = 0;
-            document.body.classList.remove('connecting');
-            const cs = document.getElementById('connect-status');
-            if (cs) {
-                cs.style.display = 'none';
-                const t = cs.querySelector('.cs-title');
-                if (t) t.textContent = 'ESTABLISHING UPLINK';
-                const f = cs.querySelector('.cs-fill');
-                if (f) f.style.width = '0%';
-            }
-            // Reveal the live drone feed: flight HUD, reticle overlay, mission bar.
-            hudShown = true;
-            document.getElementById('hud-layer').classList.add('active');
-            document.getElementById('svg-overlay').classList.add('active');
-            document.getElementById('mission-bar').classList.add('active');
-            if (beginTakeoffSequence) beginTakeoffSequence();
-        }
-
         // ----- Input -----
         function setupControls() {
             // Ignore flight keys while typing in a text field (e.g. the name box),
@@ -1817,15 +1180,15 @@
             // Background
             ctx.clearRect(0, 0, W, H);
             const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
-            bg.addColorStop(0, 'rgba(10,22,26,0.95)');
-            bg.addColorStop(1, 'rgba(4,8,10,0.98)');
+            bg.addColorStop(0, 'rgba(0,40,10,0.95)');
+            bg.addColorStop(1, 'rgba(0,10,4,0.98)');
             ctx.fillStyle = bg;
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
             ctx.fill();
 
             // Grid rings
-            ctx.strokeStyle = 'rgba(54,224,176,0.22)';
+            ctx.strokeStyle = 'rgba(0,180,50,0.25)';
             ctx.lineWidth = 1;
             [0.33, 0.66, 1].forEach(f => {
                 ctx.beginPath();
@@ -1834,14 +1197,14 @@
             });
 
             // Cross-hairs
-            ctx.strokeStyle = 'rgba(54,224,176,0.16)';
+            ctx.strokeStyle = 'rgba(0,180,50,0.2)';
             ctx.beginPath();
             ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R);
             ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy);
             ctx.stroke();
 
             // Outer border
-            ctx.strokeStyle = 'rgba(54,224,176,0.5)';
+            ctx.strokeStyle = 'rgba(0,200,68,0.55)';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.arc(cx, cy, R, 0, Math.PI * 2);
@@ -1857,7 +1220,7 @@
             for (let i = 0; i < 60; i++) {
                 const a = radarAngle - (sweepLen * i / 60);
                 const alpha = (1 - i / 60) * 0.18;
-                ctx.fillStyle = `rgba(54,224,176,${alpha})`;
+                ctx.fillStyle = `rgba(0,220,60,${alpha})`;
                 ctx.beginPath();
                 ctx.moveTo(cx, cy);
                 ctx.arc(cx, cy, R, a - sweepLen / 60, a);
@@ -1865,7 +1228,7 @@
                 ctx.fill();
             }
             // Sharp leading line
-            ctx.strokeStyle = 'rgba(54,224,176,0.95)';
+            ctx.strokeStyle = 'rgba(0,255,80,0.9)';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.moveTo(cx, cy);
@@ -1890,14 +1253,14 @@
                 const by = cy - ny * R;
                 const blink = (Math.sin(performance.now() * 0.006) + 1) / 2;
                 const m = edge ? 3.5 : 5.5;             // size of the X mark
-                ctx.strokeStyle = `rgba(242,178,51,${0.55 + 0.45 * blink})`;
+                ctx.strokeStyle = `rgba(255,70,70,${0.55 + 0.45 * blink})`;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 ctx.moveTo(bx - m, by - m); ctx.lineTo(bx + m, by + m);
                 ctx.moveTo(bx - m, by + m); ctx.lineTo(bx + m, by - m);
                 ctx.stroke();
                 if (!edge) {
-                    ctx.strokeStyle = `rgba(242,178,51,${0.25 + 0.35 * blink})`;
+                    ctx.strokeStyle = `rgba(255,70,70,${0.25 + 0.35 * blink})`;
                     ctx.lineWidth = 1.2;
                     ctx.beginPath();
                     ctx.arc(bx, by, 10, 0, Math.PI * 2);
@@ -1928,7 +1291,7 @@
             showRetrievalChoice = () => {
                 choiceBox.style.display = 'none';
                 takeoffPrompt.style.display = 'none';
-                typeLine({ text: () => 'Target reached. I don't detect any life signs...I'm sorry, looks like we're too late. How would you like to proceed?' }, () => {
+                typeLine({ text: () => 'Survivor reached. How do you want to proceed?' }, () => {
                     retrievalChoice.style.display = 'flex';
                 });
             };
@@ -1957,7 +1320,7 @@
                 { text: () => `…`, ellipsis: true },
                 { text: () => `Target detected.` },
                 { text: () => `…`, ellipsis: true },
-                { text: () => `We have a drone launcher nearby… let me see if I can link up.` },
+                { text: () => `Looks like we're very close to it.` },
                 { text: () => `…`, ellipsis: true },
                 { text: () => `Do you accept rescue mission?`, choice: true, action: 'radar' },
             ];
@@ -2029,13 +1392,13 @@
                 playerName = (nameInput && nameInput.value.trim()) || 'Operator';
                 if (nameInput) nameInput.blur();
                 briefingStarted = true;
-                // The pre-link conversation happens HERE, on the welcome console — the
-                // drone/ocean isn't visible until we connect. Just drop the controls and
-                // float DARYA above the backdrop; no HUD / scene reveal yet.
-                welcome.classList.add('briefing');
-                const dock = document.getElementById('darya-dock');
-                dock.style.display = 'block';
-                dock.classList.add('dock-welcome');   // mid-low on the welcome console
+                hudShown = true;
+                bootStart = performance.now();   // feed comes online -> stabilizing glitch
+                nextGlitchAt = 0; burstStart = 0;   // schedule fresh random flare-ups
+                welcome.classList.add('hidden');
+                document.getElementById('hud-layer').classList.add('active');
+                document.getElementById('svg-overlay').classList.add('active');
+                document.getElementById('mission-bar').classList.add('active');
                 choiceBox.style.display = 'none';
                 takeoffPrompt.style.display = 'none';
                 runStep(0);
@@ -2044,74 +1407,14 @@
             function acceptMission() {
                 choiceBox.style.display = 'none';
                 briefingIndex = briefingSteps.length;   // past the scripted lines
-                typeLine({ text: () => "Great! Connecting to your drone now…" }, () => {
-                    briefingTimer = setTimeout(() => startConnecting(), 800);
-                });
-            }
-
-            // Resumed by finishConnecting() once the orbital dive hands off to the
-            // live drone feed: greet the operator and arm the spin-up prompt.
-            beginTakeoffSequence = () => {
-                typeLine({ text: () => "Uplink established — you're flying live. Hold Space to spin up the rotors." }, () => {
+                typeLine({ text: () => "Great! Let's get to it boss. Hold Space to spin up the rotors." }, () => {
                     briefingTimer = setTimeout(() => {
                         takeoffReady = true;
                         takeoffPrompt.style.display = 'block';
                         beginTakeoffLoop();
-                    }, 700);
+                    }, 800);
                 });
-            };
-
-            // Re-arm the spin-up bar after the drone drowns: flash the warning, then
-            // let the operator hold Space to lift back out of the water.
-            respawnFromDrown = () => {
-                const dt = document.getElementById('darya-text');
-                const dock = document.getElementById('darya-dock');
-                if (dt) dt.classList.add('alert');
-                if (dock) dock.classList.add('alert');
-                typeLine({ text: () => "We're in the water! Hold Space to re-ignite the rotors and lift off." }, () => {
-                    if (dt) dt.classList.remove('alert');
-                    if (dock) dock.classList.remove('alert');
-                    takeoffReady = true;
-                    takeoffPrompt.style.display = 'block';
-                    beginTakeoffLoop();
-                });
-            };
-
-            // Developer shortcut (Cmd/Ctrl+D): skip the briefing, connect dive and
-            // take-off — drop straight into live flight with the mission active.
-            devSkip = () => {
-                if (started) return;
-                clearTimeout(briefingTimer); clearInterval(typingTimer); clearInterval(takeoffTimer);
-                Object.keys(keys).forEach(k => keys[k] = false);
-                briefingStarted = true;
-                connecting = false; connectHandoff = false;
-                if (globeMarker) globeMarker.visible = false;
-                renderPass.scene = scene; renderPass.camera = camera;
-                welcome.classList.remove('briefing'); welcome.classList.add('hidden');
-                document.body.classList.remove('connecting');
-                const cs = document.getElementById('connect-status'); if (cs) cs.style.display = 'none';
-                const dskDock = document.getElementById('darya-dock');
-                dskDock.style.display = 'block';
-                dskDock.classList.remove('dock-welcome');
-                document.getElementById('hud-layer').classList.add('active');
-                document.getElementById('svg-overlay').classList.add('active');
-                document.getElementById('mission-bar').classList.add('active');
-                choiceBox.style.display = 'none';
-                takeoffPrompt.style.display = 'none';
-                showRadarTarget();
-                hudShown = true;
-                takingOff = false; takeoffReady = false; started = true;
-                drowned = false; takeoffRespawn = false;
-                armedProximity = true; floorArmed = true;
-                droneVel.set(0, 0, 0);
-                droneYaw = THREE.MathUtils.degToRad(324);
-                camera.position.set(0, 140, 0);
-                camera.rotation.set(CAM_PITCH, droneYaw, 0);
-                if (droneGroup) droneGroup.rotation.set(0, 0, 0);
-                missionStart = performance.now(); missionElapsed = 0;
-                bootStart = performance.now(); nextGlitchAt = 0; burstStart = 0;
-                daryaText.textContent = 'DEV SKIP — live control engaged.';
-            };
+            }
 
             // Hold-to-spin-up: Space fills the bar over ~3s; releasing bleeds it back.
             function beginTakeoffLoop() {
@@ -2152,31 +1455,19 @@
                 takeoffReady = false;
                 spaceHeld = false;
                 clearInterval(takeoffTimer);
+                missionStart = performance.now();   // start the 20-min countdown
+                missionElapsed = 0;                 // fresh fuel budget
                 takeoffPrompt.classList.remove('charging');
                 takeoffPrompt.style.display = 'none';
+                // Smooth liftoff: rise off the dock and ease into flight heading,
+                // then hand control to the player (no instant snap/jump).
                 takingOff = true;
                 takeoffT0 = performance.now();
-                if (drowned) {
-                    // Re-ignition after a water crash: lift from the surface back into the
-                    // air, keep heading, and DON'T reset the mission timer / fuel budget.
-                    takeoffRespawn = true;
-                    drowned = false;
-                    takeoffFromY = camera.position.y;
-                    takeoffToY = 60;
-                    typeLine({ text: () => "Rotors dry — climbing back out. Watch that altitude." }, () => {});
-                } else {
-                    // First launch off the dock: ease into flight heading, fresh budget.
-                    takeoffRespawn = false;
-                    missionStart = performance.now();   // start the countdown
-                    missionElapsed = 0;                 // fresh fuel budget
-                    takeoffFromY = START_ALT;
-                    takeoffToY = START_ALT + TAKEOFF_LIFT;
-                    let a = droneYaw % (2 * Math.PI);
-                    if (a > Math.PI) a -= 2 * Math.PI;
-                    if (a < -Math.PI) a += 2 * Math.PI;
-                    takeoffToYaw = a;                   // shortest-path target heading
-                    typeLine({ text: () => "Lifting off. Holding heading — let's find that vessel." }, () => {});
-                }
+                let a = droneYaw % (2 * Math.PI);
+                if (a > Math.PI) a -= 2 * Math.PI;
+                if (a < -Math.PI) a += 2 * Math.PI;
+                takeoffToYaw = a;                   // shortest-path target heading
+                typeLine({ text: () => "Lifting off. Holding heading — let's find that vessel." }, () => {});
             }
 
             function resetToWelcome() {
@@ -2185,19 +1476,6 @@
                 briefingStarted = false;
                 hudShown = false;
                 started = false;
-                drowned = false;
-                takeoffRespawn = false;
-                // Tear down the connect phase if it was mid-dive.
-                connecting = false;
-                connectHandoff = false;
-                if (renderPass) { renderPass.scene = scene; renderPass.camera = camera; }
-                document.body.classList.remove('connecting');
-                const csReset = document.getElementById('connect-status');
-                if (csReset) {
-                    csReset.style.display = 'none';
-                    const f = csReset.querySelector('.cs-fill'); if (f) f.style.width = '0%';
-                    const t = csReset.querySelector('.cs-title'); if (t) t.textContent = 'ESTABLISHING UPLINK';
-                }
                 takeoffReady = false;
                 takingOff = false;
                 radarTargetActive = false;
@@ -2247,11 +1525,6 @@
                 document.getElementById('hud-layer').classList.remove('active');
                 document.getElementById('svg-overlay').classList.remove('active');
                 document.getElementById('mission-bar').classList.remove('active');
-                if (globeMarker) globeMarker.visible = false;
-                const dockEl = document.getElementById('darya-dock');
-                dockEl.style.display = 'none';
-                dockEl.classList.remove('dock-welcome');
-                welcome.classList.remove('briefing');
                 welcome.classList.remove('hidden');
             }
 
@@ -2268,12 +1541,6 @@
             });
 
             document.addEventListener('keydown', (e) => {
-                // Developer shortcut: Cmd/Ctrl+D jumps straight to live flight.
-                if ((e.metaKey || e.ctrlKey) && (e.key === 'd' || e.key === 'D')) {
-                    e.preventDefault();
-                    if (devSkip) devSkip();
-                    return;
-                }
                 if (!briefingStarted && !started && e.key === 'Enter') { beginBriefing(); }
                 else if (takeoffReady && !started && e.key === ' ') { e.preventDefault(); spaceHeld = true; }
                 else if (briefingStarted && !started && e.key === ' ') { e.preventDefault(); advanceBriefing(); }
@@ -2284,10 +1551,8 @@
             // Click anywhere advances the briefing too (same as Space). Ignore
             // clicks on interactive controls so buttons/inputs still work normally.
             document.addEventListener('click', (e) => {
-                if (!briefingStarted || started || connecting) return;
-                // Advance on a click anywhere (incl. the welcome backdrop during the
-                // briefing), except on actual interactive controls.
-                if (e.target.closest('button, input, a')) return;
+                if (!briefingStarted || started) return;
+                if (e.target.closest('button, input, a, #welcome-screen')) return;
                 advanceBriefing();
             });
         }
@@ -2362,7 +1627,7 @@
             if (targetMarker) targetMarker.visible = true;
             if (migrantModel) migrantModel.visible = true;
             const ts = document.getElementById('target-status');
-            if (ts) { ts.innerText = 'DETECTED'; ts.style.color = '#F2B233'; }
+            if (ts) { ts.innerText = 'DETECTED'; ts.style.color = '#ff6b6b'; }
         }
 
         // Per-frame mission progression: detect the boat, then the survivor.
@@ -2386,7 +1651,7 @@
                         if (dock) dock.classList.remove('alert');
                     }, 6000);
                     const ts = document.getElementById('target-status');
-                    if (ts) { ts.innerText = 'HUMAN ON WATER'; ts.style.color = '#F2B233'; }
+                    if (ts) { ts.innerText = 'HUMAN ON WATER'; ts.style.color = '#ff6b6b'; }
                 }
                 return;
             }
@@ -2491,46 +1756,21 @@
         function onWindowResize() {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
-            if (globeCamera) {
-                globeCamera.aspect = window.innerWidth / window.innerHeight;
-                globeCamera.updateProjectionMatrix();
-            }
             renderer.setSize(window.innerWidth, window.innerHeight);
             if (composer) sizeComposer();
         }
 
-        // ----- Drown / re-ignition -----
-        // The drone went into the sea (only possible with the safety override on).
-        // Freeze flight, settle on the surface and re-arm the hold-Space spin-up bar.
-        function drown() {
-            drowned = true;
-            started = false;
-            droneVel.set(0, 0, 0);
-            camera.position.y = 1.0;            // bobbing on the surface
-            overrideEngaged = false;
-            document.body.classList.remove('warn');
-            const ob = document.getElementById('override-btn');
-            if (ob) { ob.classList.remove('engaged'); ob.textContent = 'OVERRIDE SAFETY'; }
-            if (respawnFromDrown) respawnFromDrown();
-        }
-
         // ----- Flight model -----
-        // Smooth liftoff: rise from the start altitude to the target and (on the first
-        // launch) ease the camera from the level briefing view into the flight heading.
-        // A post-drown re-ignition keeps the existing heading and just lifts clear.
+        // Smooth liftoff from the dock: rise a little and ease the camera from the
+        // level briefing view into the flight heading/pitch, then hand over control.
         function updateTakeoff() {
             let p = (performance.now() - takeoffT0) / TAKEOFF_DUR;
             if (p > 1) p = 1;
             const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;  // easeInOut
-            camera.position.y = takeoffFromY + (takeoffToY - takeoffFromY) * e;
-            if (takeoffRespawn) {
-                camera.rotation.x = CAM_PITCH;      // already in flight orientation
-                camera.rotation.y = droneYaw;
-            } else {
-                camera.rotation.x = CAM_PITCH * e;
-                camera.rotation.y = takeoffToYaw * e;
-            }
-            // gentle nose-up wobble as it leaves the pad / water
+            camera.position.y = START_ALT + TAKEOFF_LIFT * e;
+            camera.rotation.x = CAM_PITCH * e;
+            camera.rotation.y = takeoffToYaw * e;
+            // gentle nose-up wobble as it leaves the pad
             droneGroup.rotation.set(-0.08 * Math.sin(p * Math.PI), 0, 0);
             if (p >= 1) { takingOff = false; started = true; }
         }
@@ -2579,14 +1819,9 @@
 
             // Altitude floor — gated by the safety override. Only engages once the
             // drone has first climbed off the low launch deck, so take-off is smooth.
-            // With override engaged the floor is removed entirely: you can fly into the
-            // sea — and touching the surface drowns the drone (re-ignition required).
             if (camera.position.y > SAFE_FLOOR) floorArmed = true;
-            if (overrideEngaged) {
-                if (floorArmed && camera.position.y <= WATER_HIT && !drowned) { drown(); return; }
-            } else if (floorArmed && camera.position.y < SAFE_FLOOR) {
-                camera.position.y = SAFE_FLOOR; droneVel.y = Math.max(0, droneVel.y);
-            }
+            const floor = overrideEngaged ? OVERRIDE_FLOOR : SAFE_FLOOR;
+            if (floorArmed && camera.position.y < floor) { camera.position.y = floor; droneVel.y = Math.max(0, droneVel.y); }
             updateProximity();
 
             // Camera orientation: yaw to heading, fixed downward pitch so the drone
@@ -2654,16 +1889,6 @@
             let hdg = Math.round(THREE.MathUtils.radToDeg(droneYaw)) % 360;
             if (hdg < 0) hdg += 360;
             document.getElementById('hdg-val').innerText = String(hdg).padStart(3, '0');
-
-            // Live GPS readout derived from the drone's world position (fake but
-            // plausible — north is -Z, east is +X, ~0.00006° per world unit).
-            const lat = 34.5820 - camera.position.z * 0.00006;
-            const lon = 21.0543 + camera.position.x * 0.00006;
-            const latEl = document.getElementById('gps-lat');
-            const lonEl = document.getElementById('gps-lon');
-            if (latEl) latEl.textContent = Math.abs(lat).toFixed(4) + '° ' + (lat >= 0 ? 'N' : 'S');
-            if (lonEl) lonEl.textContent = Math.abs(lon).toFixed(4) + '° ' + (lon >= 0 ? 'E' : 'W');
-
             updateMission();
         }
 
@@ -2680,7 +1905,7 @@
             document.getElementById('bat-pct').textContent = Math.ceil(pct);
             const fill = document.getElementById('battery-fill');
             fill.style.width = pct + '%';
-            fill.style.background = pct > 30 ? '#5FE6FF' : pct > 10 ? '#ffc04d' : '#ff5b5b';
+            fill.style.background = pct > 30 ? '#7dffae' : pct > 10 ? '#ffc04d' : '#ff5b5b';
         }
 
         // Global frame-rate cap. We render at ~24 fps regardless of display refresh:
@@ -2706,15 +1931,6 @@
             lastFrame = now;
             dt = Math.min(dt, 0.08);              // clamp big gaps (tab switch / slow frames)
             const f = dt * 60;                    // 1.0 at 60fps
-
-            // Orbital "connecting to drone" dive — renders the globe through the same
-            // composer (feed shader + grain), then hands off to the live scene.
-            if (connecting) {
-                updateConnecting(now);
-                updateFeed(now);
-                composer.render();
-                return;
-            }
 
             if (takingOff) updateTakeoff();
             else if (droneGroup && started) updateFlight(f);   // full control stays live, even at the end choice
@@ -2767,30 +1983,6 @@
             updateFeed(now);
 
             composer.render();
-
-            // Show the rear-view tail cam only in flight; render it into its corner.
-            document.body.classList.toggle('flying', started && !connecting);
-            if (started && !connecting) renderRearView();
-        }
-
-        // Render the backward-looking camera into the top-left rear-cam rect using a
-        // scissored viewport (drawn over the already-composited frame). The B&W /
-        // low-grade look comes from the CSS backdrop-filter on #rear-cam.
-        function renderRearView() {
-            const fr = document.getElementById('rear-cam');
-            if (!fr || !rearCam) return;
-            const r = fr.getBoundingClientRect();
-            if (r.width < 2 || r.height < 2) return;
-            const x = r.left;
-            const y = window.innerHeight - r.bottom;   // GL origin is bottom-left
-            rearCam.aspect = r.width / r.height;
-            rearCam.updateProjectionMatrix();
-            renderer.setScissorTest(true);
-            renderer.setViewport(x, y, r.width, r.height);
-            renderer.setScissor(x, y, r.width, r.height);
-            renderer.render(scene, rearCam);           // clear is confined to the scissor box
-            renderer.setScissorTest(false);
-            renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         }
 
         // Drive the feed shader + signal meter. `boot` runs 1 -> 0 over BOOT_DUR after
